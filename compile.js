@@ -15,4 +15,22 @@ const source = fs.readFileSync(inboxPath, 'utf8')
 // From the return object of the compile, we only care about the contracts key
 // Within this object, the 2 keys we're interested in are: bytecode and interface
 // Export this so it can be used by other files
-module.exports = solc.compile(source, 1).contracts[':Inbox']
+// module.exports = solc.compile(source, 1).contracts[':Inbox'] <-- old version syntax
+
+const input = {
+  language: 'Solidity',
+  sources: {
+    'Inbox.sol': {
+      content: source,
+    },
+  },
+  settings: {
+    outputSelection: {
+      '*': {
+        '*': ['*'],
+      },
+    },
+  },
+}
+
+module.exports = JSON.parse(solc.compile(JSON.stringify(input))).contracts['Inbox.sol'].Inbox

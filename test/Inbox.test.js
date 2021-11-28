@@ -6,7 +6,7 @@ const Web3 = require('web3') // note that Web3 is capitalized. We're importing a
 // The reason why we might want to have multiple instances of Web3 is to connect to different networks.
 // More likely than not, we will only be connecting to one network.
 const web3 = new Web3(ganache.provider())
-const { interface, bytecode } = require('../compile')
+const { abi, evm } = require('../compile')
 
 // run test suite: npm run test
 
@@ -24,9 +24,9 @@ beforeEach(async () => {
   accounts = await web3.eth.getAccounts()
 
   // Use one of those accounts to deploy the contract
-  // Contract is capitalized. We're going to create an instance of it.
-  inbox = await new web3.eth.Contract(JSON.parse(interface))
-    .deploy({ data: bytecode, arguments: ['Hi there!'] }) // our Inbox contract needs to be initialized with a message
+  // Contract is capitalized.
+  inbox = await new web3.eth.Contract(abi)
+    .deploy({ data: evm.bytecode.object, arguments: ['Hi there!'] }) // our Inbox contract needs to be initialized with a message
     .send({ from: accounts[0], gas: '1000000' })
 })
 
