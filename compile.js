@@ -1,4 +1,7 @@
-// compile code will go here
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config()
+}
+
 const path = require('path')
 const fs = require('fs')
 const solc = require('solc')
